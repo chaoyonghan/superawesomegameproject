@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <deque>
 #include <boost\bind.hpp>
 #include <boost\asio.hpp>
 #include <boost\thread\thread.hpp>
@@ -30,6 +31,7 @@ class NetworkMgr : public SingletonHolder<NetworkMgr>
 		, mUdpResolver(mIoService)
 		, mUdpSocket(mIoService)
 		, mReadMsg()
+		, mDeqWrtMsg()
 	{
 
 	}
@@ -42,8 +44,11 @@ public:
 	}
 	//Terminates the Network Manager.
 	void Terminate();	
+	//Returns the network address of the local machine.
+	void GetLocalAddress()
+	{
 
-	void GetLocalAddress();	//Returns the network address of the local machine.
+	}
 	void GetConnectionCount();	//Returns returns the number of connections which are currently established.
 	void GetMaxConnectionCount();	//Returns the maximum number of connections that the Network Manager will allow at one time.
 	void SetMaxConnectionCount();	//Sets the maximum number of connections that the Network Manager will allow at one time.
@@ -76,8 +81,11 @@ public:
 	}
 	void Disconnect();	//Terminates a connection with another machine.
 	void ResolveAddress();	//Looks up the IP address corresponding to a domain name.
-
-	void SendReliablePacket();	//Sends a reliable packet to another machine.
+	//Sends a reliable packet to another machine.
+	void SendReliablePacket(const ChatMessage& msg)
+	{
+		mIoService.post(boost::bind(&NetworkMgr::TcpDoWrite, this, msg));
+	}
 	void SendUnreliablePacket();	//Sends an unreliable packet to another machine.
 	void SendUnorderedPacket();	 //Sends an unordered packet to another machine.
 	void SendConnectionlessPacket(); //Sends an unreliable data packet to another machine without establishing a connection.
@@ -113,19 +121,19 @@ private:
 		{
 			boost::asio::async_read(
 				mTcpSocket,
-				boost::asio::buffer(mReadMsg.data(),chat_message::header_length),
-				boost::bind(&NetworkMgr::HandleReadHeader, this, boost::asio::placeholders::error)
+				boost::asio::buffer(mReadMsg.data(),ChatMessage::header_length),
+				boost::bind(&NetworkMgr::TcpHandleReadHeader, this, boost::asio::placeholders::error)
 				);
 		}
 	}
 
-	void HandleReadHeader( const boost::system::error_code& iError)
+	void TcpHandleReadHeader( const boost::system::error_code& iError)
 	{
 		if (!iError && mReadMsg.decode_header())
 		{
 			boost::asio::async_read(mTcpSocket,
 				boost::asio::buffer(mReadMsg.body(), mReadMsg.body_length()),
-				boost::bind(&NetworkMgr::HandleReadBody, this,
+				boost::bind(&NetworkMgr::TcpHandleReadBody, this,
 				boost::asio::placeholders::error));
 		}
 		else
@@ -134,15 +142,15 @@ private:
 		}
 	}
 
-	void HandleReadBody( const boost::system::error_code& iError)
+	void TcpHandleReadBody( const boost::system::error_code& iError)
 	{
 		if (!iError)
 		{
 			std::cout.write(mReadMsg.body(), mReadMsg.body_length());
 			std::cout << "\n";
 			boost::asio::async_read(mTcpSocket,
-				boost::asio::buffer(mReadMsg.data(), chat_message::header_length),
-				boost::bind(&NetworkMgr::HandleReadHeader, this,
+				boost::asio::buffer(mReadMsg.data(), ChatMessage::header_length),
+				boost::bind(&NetworkMgr::TcpHandleReadHeader, this,
 				boost::asio::placeholders::error));
 		}
 		else
@@ -150,6 +158,41 @@ private:
 			mTcpSocket.close();
 		}
 	}
+
+	void TcpDoWrite(ChatMessage msg)
+	{
+		bool write_in_progress = !mDeqWrtMsg.empty();
+		mDeqWrtMsg.push_back(msg);
+		if (!write_in_progress)
+		{
+			boost::asio::async_write(mTcpSocket,
+				boost::asio::buffer(mDeqWrtMsg.front().data(),
+				mDeqWrtMsg.front().length()),
+				boost::bind(&NetworkMgr::TcpHandleWrite, this,
+				boost::asio::placeholders::error));
+		}
+	}
+
+	void TcpHandleWrite(const boost::system::error_code& error)
+	{
+		if (!error)
+		{
+			mDeqWrtMsg.pop_front();
+			if (!mDeqWrtMsg.empty())
+			{
+				boost::asio::async_write(mTcpSocket,
+					boost::asio::buffer(mDeqWrtMsg.front().data(),
+					mDeqWrtMsg.front().length()),
+					boost::bind(&NetworkMgr::TcpHandleWrite, this,
+					boost::asio::placeholders::error));
+			}
+		}
+		else
+		{
+			mTcpSocket.close();
+		}
+	}
+
 	unsigned short mPort;
 	bool mProtocol;
 	boost::asio::io_service mIoService;
@@ -162,9 +205,10 @@ private:
 	boost::asio::ip::udp::resolver mUdpResolver;
 	//boost::asio::ip::udp::resolver::query* mUdpQuery;
 
-	chat_message mReadMsg;
-
+	ChatMessage mReadMsg;
+	std::deque<ChatMessage> mDeqWrtMsg;
 };
+
 //
 //class SingletonNetworkMgr : public NetworkMgr
 //{
