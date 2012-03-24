@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChatMessage.h" />
     <ClInclude Include="NetWorkManager.h" />
     <ClInclude Include="Singleton.h" />
   </ItemGroup>
