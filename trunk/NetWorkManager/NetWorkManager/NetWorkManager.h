@@ -8,29 +8,52 @@ class NetworkMgr;
 class NetworkMgr
 {
 public:
-	typedef boost::asio::io_service IoService;
-	typedef boost::asio::ip::tcp::socket Socket;
 
 	int Initialize()
 	{
 
 	}
 	
-	NetworkMgr()
-	{
-
-	}
-
 	NetworkMgr(std::string iIP,std::string iPort)
+		: mSocket(mIoService)
+		, mResolver(mIoService)
+		, mQuery(iIP, iPort)
 	{
-		IoService mIoService;
-		boost::asio::ip::tcp::resolver mResolver(mIoService);
-		boost::asio::ip::tcp::resolver::query mQuery(iIP, iPort);
-		boost::asio::ip::tcp::resolver::iterator mIterator = mResolver.resolve(mQuery);
+		mIterator = mResolver.resolve(mQuery);
 	}
 
 private:
 
-	//IoService& mIoService;
-	Socket mSocket;
+	boost::asio::ip::tcp::socket mSocket;
+	boost::asio::io_service mIoService;
+	boost::asio::ip::tcp::resolver mResolver;
+	boost::asio::ip::tcp::resolver::query mQuery;
+	boost::asio::ip::tcp::resolver::iterator mIterator;
+};
+
+class SingletonNetworkMgr : public NetworkMgr
+{
+	typedef SingletonHolder<SingletonNetworkMgr> SingManager;
+
+	SingletonNetworkMgr( const SingletonNetworkMgr & );
+
+	SingletonNetworkMgr & operator = ( const SingletonNetworkMgr & );
+
+public:
+
+	static SingletonNetworkMgr& Instance( void )
+	{
+		return SingManager::Instance();
+	}
+
+	SingletonNetworkMgr() : NetworkMgr("","")
+	{
+	
+	}
+
+	/// The destructor is not meant to be called directly.
+	~SingletonNetworkMgr( void )
+	{
+
+	}
 };
