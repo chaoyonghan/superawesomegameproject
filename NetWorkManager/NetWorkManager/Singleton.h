@@ -12,7 +12,7 @@ public:
 
 	static ObjectTypeRef Instance()
 	{
-		if (m_pInstance == nullptr)
+		if (!m_pInstance)
 		{
 			MakeInstance();
 		}
@@ -29,5 +29,5 @@ private:
 		}
 	}
 
-	ObjectTypePtr m_pInstance;
+	static ObjectTypePtr m_pInstance;
 };
