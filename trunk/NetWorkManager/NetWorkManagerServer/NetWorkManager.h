@@ -99,7 +99,6 @@ private:
 
 	NetworkMgr& operator= ( const NetworkMgr& );
 
-
 	unsigned short mPort;
 	bool mProtocol;
 	boost::asio::io_service mIoService;
