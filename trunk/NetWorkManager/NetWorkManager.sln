@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetWorkManager", "NetWorkManager\NetWorkManager.vcxproj", "{3E15DD2F-F026-4861-8041-317E68602430}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetWorkManagerClient", "NetWorkManager\NetWorkManager.vcxproj", "{3E15DD2F-F026-4861-8041-317E68602430}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetWorkManagerServer", "NetWorkManagerServer\NetWorkManagerServer.vcxproj", "{FE338E9F-A0E1-4225-A398-8D511B9989EC}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -17,6 +19,10 @@ Global
 		{3E15DD2F-F026-4861-8041-317E68602430}.Debug|Win32.Build.0 = Debug|Win32
 		{3E15DD2F-F026-4861-8041-317E68602430}.Release|Win32.ActiveCfg = Release|Win32
 		{3E15DD2F-F026-4861-8041-317E68602430}.Release|Win32.Build.0 = Release|Win32
+		{FE338E9F-A0E1-4225-A398-8D511B9989EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FE338E9F-A0E1-4225-A398-8D511B9989EC}.Debug|Win32.Build.0 = Debug|Win32
+		{FE338E9F-A0E1-4225-A398-8D511B9989EC}.Release|Win32.ActiveCfg = Release|Win32
+		{FE338E9F-A0E1-4225-A398-8D511B9989EC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
