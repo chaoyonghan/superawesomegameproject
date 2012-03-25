@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -77,8 +77,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChatMessage.h" />
+    <ClInclude Include="ChatPartecipant.h" />
+    <ClInclude Include="ChatRoom.h" />
+    <ClInclude Include="ChatSession.h" />
     <ClInclude Include="NetWorkManager.h" />
     <ClInclude Include="Singleton.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MyMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
