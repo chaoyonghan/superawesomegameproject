@@ -1,0 +1,16 @@
+﻿Build started 11/05/2012 12:00:22.
+     1>Project "C:\Users\Simone\Desktop\Graphics\Direct3D SDK 10\Source\GPUBlendShapes\GPUBlendShapes.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "..\..\Temp\Debug\GPUBlendShapes\GPUBlendShapes.unsuccessfulbuild".
+       _FXC:
+         Executing tool...
+         cmd.exe /C "C:\Users\Simone\AppData\Local\Temp\976d24b033e747eba38d963009ca2b22.cmd"
+         fxc.exe /Fo [outputdir]\$(InputName).o /T fx_4_0 /Ges       GPUBlendShapes.fx
+         'fxc.exe' is not recognized as an internal or external command,
+         operable program or batch file.
+     1>C:\Users\Simone\Desktop\Graphics\Direct3D SDK 10\Source\Common\FXC.targets(45,5): error MSB3721: The command "fxc.exe /Fo [outputdir]\$(InputName).o /T fx_4_0 /Ges       GPUBlendShapes.fx" exited with code 1.
+     1>Done Building Project "C:\Users\Simone\Desktop\Graphics\Direct3D SDK 10\Source\GPUBlendShapes\GPUBlendShapes.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.24

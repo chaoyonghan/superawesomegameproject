@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6596ab22-2e07-41ff-894c-73d89967caa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media Files">
+      <UniqueIdentifier>{5d99a467-779e-4898-9b4f-83826735fd81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media Files\meshes">
+      <UniqueIdentifier>{24bcc113-c9ae-4d09-974a-46747945268c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media Files\textures">
+      <UniqueIdentifier>{01941e8b-c1cd-458a-b380-4ddf3b258de7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e9b928e3-fdc4-4baa-bbfe-1459cd0b167a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Curve\curveEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Curve\curvereader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUBlendShapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Curve\curveEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Curve\curvereader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nvd3d10rawmesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NVRawMesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FXC Include="GPUBlendShapes.fx">
+      <Filter>Source Files</Filter>
+    </FXC>
+    <FXC Include="..\Common\NVUT\nvutskybox.fx">
+      <Filter>Source Files</Filter>
+    </FXC>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GPUBlendShapes_TBuffer.fxh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\anim.txt">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\CM_Forest.dds">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\CM_Forest_diffuse.dds">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\CM_forest_specular.dds">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\directx.ico">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\dawn_BodyShape.mesh">
+      <Filter>Media Files\meshes</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\dawn_HeadShape.mesh">
+      <Filter>Media Files\meshes</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\dawn_LEyeShape.mesh">
+      <Filter>Media Files\meshes</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\dawn_REyeShape.mesh">
+      <Filter>Media Files\meshes</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendshapes\dawn_teethUpperShape.mesh">
+      <Filter>Media Files\meshes</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_eye_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_head_back_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendshapes\f_head_front_bmp_norm_rgb8.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_head_front_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_skin_spec_shift.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_torso_back_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_torso_front_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_ularm_back_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_ularm_front_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_urarm_back_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+    <None Include="..\..\Media\MediaFor_GPUBlendShapes\f_urarm_front_col.dds">
+      <Filter>Media Files\textures</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="GPUBlendShapes.manifest">
+      <Filter>Resource Files</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GPUBlendShapes.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
