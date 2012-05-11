@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ac4f04a6-3fc5-4833-bdcf-98b58a272f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{7cb8980e-fc17-442e-965b-af346274c288}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DXUTcamera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTgui.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTres.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTsettingsdlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTShapes.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKmesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="sdkmesh_old.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKmisc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKsound.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKwavefile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\DXUTcamera.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\DXUTgui.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\DXUTres.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\DXUTsettingsdlg.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\DXUTShapes.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\rmxfguid.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\rmxftmpl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\SDKmesh.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\sdkmesh_old.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\SDKmisc.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\SDKsound.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Include\DXUT\Optional\SDKwavefile.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

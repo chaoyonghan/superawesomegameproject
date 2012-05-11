@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{a015e08e-4d1d-4abe-a8db-7061b4db4748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media Files">
+      <UniqueIdentifier>{f6e98808-e17f-4ba6-9573-51edfe1fb99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{aeb7b7d6-8c56-4b4d-9320-886014f59b4d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D3D10Quad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VarianceShadowMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D3D10Quad.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectWithOneTechnique.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VarianceShadowMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FXC Include="DrawScene.fx">
+      <Filter>Source Files</Filter>
+    </FXC>
+    <FXC Include="GenerateVSM.fx">
+      <Filter>Source Files</Filter>
+    </FXC>
+    <FXC Include="SeparableBlur.fx">
+      <Filter>Source Files</Filter>
+    </FXC>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VarianceShadowMapping.fxh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\Media\directx.ico">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\goof_knight.x">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\tiles_WhiteAndGrey_01_diffuse.dds">
+      <Filter>Media Files</Filter>
+    </None>
+    <None Include="..\..\Media\tiles_WhiteAndGrey_01_normal.dds">
+      <Filter>Media Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="VarianceShadowMapping.manifest">
+      <Filter>Resource Files</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VarianceShadowMapping.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
