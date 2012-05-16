@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <QThread>
+#include <QTimer>
 
 #include "ETTerrainManager.h"
 #include "ETTerrainInfo.h"
@@ -55,6 +57,8 @@ public:
 	Ogre::SceneNode* m_node;
 };
 
+class MyEntityAnim;
+
 class OgreWidget : public QGLWidget
 {
 	Q_OBJECT;
@@ -68,6 +72,7 @@ public:
 
 	Ogre::Entity* ent;
 	Ogre::SceneNode* node;
+	MyEntityAnim* mAnimStateThread;
 
 	Ogre::Entity* ent2;
 	Ogre::SceneNode* node2;
@@ -97,16 +102,33 @@ public:
 	bool scaleDw;
 
 	bool mCtrlPress;
+	bool mAltPress;
+	bool mShiftPress;
 
 	float rotX;
 	float rotY;
 	float rotZ;
 
+	float rotNodeX;
+	float rotNodeY;
+	float rotNodeZ;
+
 	float mTranslateX;
+
+	bool mCreateLight;
+	bool mSetShadow;
+	bool mSetAnim;
+
+	
+	bool isRightMousePress;
 
 	ET::TerrainManager* mTerrainMgr;
 	ET::SplattingManager* mSplatMgr;
 	float mTranslateY;
+	float mTranslateZ;
+
+	QTimer* timer;
+
 	OgreWidget( QWidget *parent=0 ) : QGLWidget( parent ), mOgreWindow(NULL)
 	{
 		//setFocusPolicy(Qt::FocusPolicy::ClickFocus);
@@ -114,13 +136,22 @@ public:
 		init( "plugins_d.cfg", "ogre.cfg", "ogre.log" );
 		
 		mCtrlPress = false;
+		mAltPress =false;
+		mShiftPress = false;
 
 		rotate = false;
 		scaleUp = false;
 		scaleDw = false;
 
+		isRightMousePress = false;
+
+		mCreateLight = false;
+		mSetShadow = false;
+		mSetAnim = false;
+
 		mTranslateX = 0.0f;
 		mTranslateY = 0.0f;
+		mTranslateZ = 0.0f;
 
 		rotX = 0.0f;
 		rotY = 0.0f;
@@ -138,6 +169,10 @@ public:
 		blue_gizmo = new Gizmo();
 
 		this->setMouseTracking(true);
+		timer = new QTimer();
+		timer->setInterval(30);
+		timer->start();
+		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 	}
 
 	virtual ~OgreWidget()
@@ -154,11 +189,21 @@ public:
 	{
 		mCamera->moveRelative(Ogre::Vector3(0, 0, -0.2));
 	}
+protected slots:
+
+	void update()
+	{
+		updateGL();
+	}
 
 protected:
 	virtual void initializeGL();
 	virtual void resizeGL( int, int );
 	virtual void paintGL();
+
+	bool CreateNodeLight();
+	bool setShadow();
+	bool unsetShadow();
 
 	static void qNormalizeAngle(int &angle)
 	{
@@ -168,31 +213,6 @@ protected:
 			angle -= 360 * 16;
 	}
 
-	void setYRotation(int angle)
-	{
-		qNormalizeAngle(angle);
-		if (angle != rotY) {
-			rotY = angle;
-			updateGL();
-		}
-	}
-
-	void setXRotation(int angle)
-	{
-		qNormalizeAngle(angle);
-		if (angle != rotX) {
-			rotX = angle;
-			
-		}
-	}
-	void setZRotation(int angle)
-	{
-		qNormalizeAngle(angle);
-		if (angle != rotZ) {
-			rotZ = angle;
-			
-		}
-	}
 	/*void keyPressEvent(QKeyEvent *e)
 	{
 		switch( e->key() )
@@ -209,16 +229,27 @@ protected:
 
 		float dx = event->posF().rx() - lastPos.x();
 		float dy = event->posF().ry() - lastPos.y();
-
+		isRightMousePress = event->buttons() & Qt::RightButton;
 		if (event->buttons() & Qt::RightButton) {
-			setXRotation(0.25*dx);
-			setYRotation(0.25*dy);
-			updateGL();
+			rotX = 0.025 * dx;
+			rotY = -0.025 * dy;
+			
+			//updateGL();
 		}
-		else if (mCtrlPress) {
+		else if (mCtrlPress && !mAltPress && !mShiftPress) {
 			mTranslateX = 0.025*dx;
 			mTranslateY = -0.025*dy;
-			updateGL();
+			//updateGL();
+		}
+		else if (mAltPress && mCtrlPress && !mShiftPress) {
+			mTranslateX = 0.025*dx;
+			mTranslateZ = -0.025*dy;
+			//updateGL();
+		}
+		else if (!mAltPress && mCtrlPress && mShiftPress) {
+			rotNodeX = 0.035 * dx;
+			rotNodeY = -0.035 * dy;
+			//updateGL();
 		}
 		lastPos = event->pos();
 	}
@@ -285,7 +316,7 @@ protected:
 				//if(sel_gizmo) sel_gizmo->m_entity->setVisible(false);
 			}
 		}
-		this->updateGL();
+		//this->updateGL();
 	}
 
 	void wheelEvent(QWheelEvent *event)
@@ -293,12 +324,12 @@ protected:
 		if(g_node != nullptr && g_node->getName().compare("RED_ROT_GIZMO_NODE"))
 		{
 			event->delta() > 0 ? g_node->scale(1.02, 1.02, 1.02) : g_node->scale(0.98, 0.98, 0.98);
-			updateGL();
+			//updateGL();
 		}
 		else
 		{
 			event->delta() > 0 ? mCamera->moveRelative(Ogre::Vector3(0, 0, -0.2)) : mCamera->moveRelative(Ogre::Vector3(0, 0, 0.2));
-			updateGL();
+			//updateGL();
 		}
 	}
 
@@ -306,6 +337,65 @@ protected:
 
 	virtual Ogre::RenderSystem* chooseRenderer( Ogre::RenderSystemList* );
 
+};
+
+class MyEntityAnim : public QThread
+{
+	Ogre::AnimationState* _aniState;
+	unsigned long mMilliSec;
+	bool mIsStarted;
+	OgreWidget* mOgrePtr;
+
+public:
+	MyEntityAnim(Ogre::Entity* ptr,Ogre::String animName, OgreWidget* ptrOgreW)
+		:QThread()
+		,_aniState(ptr->getAnimationState(animName))
+		,mMilliSec(25)
+		,mOgrePtr(ptrOgreW)
+		,mIsStarted(false)
+	{
+
+	}
+
+	void setAnimation()
+	{
+		_aniState->setEnabled(true);
+		_aniState->setLoop(true);
+	}
+
+	void setAnimStep(unsigned long time)
+	{
+		mMilliSec = time;
+	}
+
+	bool isStarted()
+	{
+		return mIsStarted;
+	}
+
+	bool Stop()
+	{
+		mIsStarted = false;
+	}
+
+	void run()
+	{
+		mIsStarted = true;
+		while(1)
+		{
+			msleep(mMilliSec);
+			if(mOgrePtr->mSetAnim)
+			{
+				_aniState->addTime(0.01);
+				//mOgrePtr->updateGL();
+			}
+			else
+			{
+				mIsStarted = false;
+				break;
+			}
+		}
+	}
 };
 
 #endif

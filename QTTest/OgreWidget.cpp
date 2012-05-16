@@ -163,7 +163,7 @@ void THIS::initializeGL()
 	loadResource();
 
 	ent = mSceneMgr->createEntity("1", "Sinbad.mesh");
-
+	mAnimStateThread = new MyEntityAnim(ent,"Dance",this);
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode("NODO_1");
 	node->translate(-6, 0, 0);
 	node->attachObject(ent);
@@ -250,6 +250,7 @@ void THIS::initializeGL()
 */
 void THIS::paintGL()
 {
+	
 	assert( mOgreWindow );
 
 	if(rotate && g_node)
@@ -276,11 +277,74 @@ void THIS::paintGL()
 	else
 		scaleDw = false;
 
-	mCamera->yaw(-Ogre::Degree(rotX));
-    mCamera->pitch(-Ogre::Degree(rotY));
-	if(g_node != nullptr && mCtrlPress)
+	if(mCreateLight)
+	{
+		CreateNodeLight();
+		mCreateLight = !mCreateLight;
+	}
+
+	if(mSetShadow)
+		setShadow();
+	else
+		unsetShadow();
+
+	if(mSetAnim)
+	{
+		if(!mAnimStateThread->isStarted())
+		{
+			mAnimStateThread->setAnimation();
+			mAnimStateThread->start();
+		}
+	}
+	else
+	{
+		if(mAnimStateThread->isStarted())
+			mAnimStateThread->quit();
+	}
+
+	if(isRightMousePress)
+	{
+		mCamera->yaw(-Ogre::Degree(rotX));
+		mCamera->pitch(-Ogre::Degree(rotY));
+	}
+	if(g_node != nullptr && mCtrlPress && !mAltPress && !mShiftPress)
 		g_node->translate(mTranslateX,mTranslateY,0.0f);
+	if(g_node != nullptr && mAltPress && mCtrlPress && !mShiftPress)
+		g_node->translate(mTranslateX,0.0f,mTranslateZ);
+	if(g_node != nullptr && !mAltPress && mCtrlPress && mShiftPress)
+	{
+		g_node->rotate(Ogre::Vector3::UNIT_Y,-Ogre::Degree(rotNodeX));
+		g_node->rotate(Ogre::Vector3::UNIT_X,-Ogre::Degree(rotNodeY));
+	}
+
 	mOgreRoot->renderOneFrame();
+}
+
+bool THIS::setShadow()
+{
+	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+	return true;
+}
+
+bool THIS::unsetShadow()
+{
+	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_NONE);
+	return true;
+}
+
+bool THIS::CreateNodeLight()
+{
+	Ogre::SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode("NodeLight");
+	Ogre::Light* light1 = mSceneMgr->createLight("Light_001");
+	light1->setType(Ogre::Light::LT_POINT);
+	light1->setPosition(0,8,5);
+	light1->setDiffuseColour(1.0f,1.0f,1.0f);
+	node->attachObject(light1);
+	Ogre::Entity* LightEnt = mSceneMgr->createEntity("LightEntity_001","sphere.mesh");
+	node->setScale(0.01f,0.01f,0.01f);
+	node->setPosition(0,13,5);
+	node->attachObject(LightEnt);
+	return true;
 }
 
 /**
