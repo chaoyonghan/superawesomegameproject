@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <sstream>
+
 #include <QFileDialog>
 
 class MyMainWindow : public QMainWindow
@@ -26,6 +27,8 @@ class MyMainWindow : public QMainWindow
 	bool miao;
 
 
+	
+
 public:
 	MyMainWindow() : QMainWindow()
 	{
@@ -39,7 +42,9 @@ public:
 		ui.listWidget->addItem("Sinbad_001");
 		ui.listWidget->addItem("Sinbad_002");
 
-
+		connect(ui.pushButtonCreateLight,SIGNAL(clicked()),this,SLOT(CreateNewLight()));
+		connect(ui.pushButtonSetShadow,SIGNAL(clicked()),this,SLOT(SetShadow()));
+		connect(ui.pushButtonStartAnim,SIGNAL(clicked()),this,SLOT(SetAnim()));
 		//butt1 = new QPushButton(this);
 		//butt1->setText("BackGroundColor");
 		//butt1->setGeometry(0,0,30,30);
@@ -112,7 +117,7 @@ public:
 	void cameraMove(const Ogre::Vector3 &moveVector)
 	{
 		ogreWidget->mCamera->moveRelative(moveVector);
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void keyPressEvent(QKeyEvent *e)
@@ -144,47 +149,53 @@ public:
 				std::cout << "Key_Up PRESSED" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(0, 0.1, 0);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 			case Qt::Key_Down:
 				std::cout << "Key_Down PRESSED" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(0, -0.1, 0);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 			case Qt::Key_Left:
 				std::cout << "Key_Left PRESSED" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(-0.1, 0, 0);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 			case Qt::Key_Right:
 				std::cout << "Key_Right PRESSED" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(0.1, 0, 0);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 			case Qt::Key_PageUp:
 				std::cout << "Key_PageUp" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(0, 0, -0.1);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 			case Qt::Key_PageDown:
 				std::cout << "Key_PageDown" << std::endl;
 				if(ogreWidget->g_node != nullptr)
 					ogreWidget->g_node->translate(0, 0, 0.1);
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 
 			case Qt::Key_B:
 				std::cout << "Key_B" << std::endl;
 				changeColour();
-				ogreWidget->updateGL();
+				//ogreWidget->updateGL();
 				break;
 
 			case  Qt::Key_Control:
 				ogreWidget->mCtrlPress = true;
+				break;
+			case  Qt::Key_Alt:
+				ogreWidget->mAltPress = true;
+				break;
+			case  Qt::Key_Shift:
+				ogreWidget->mShiftPress = true;
 				break;
 		}
 	}
@@ -195,6 +206,12 @@ public:
 		{
 			case  Qt::Key_Control:
 				ogreWidget->mCtrlPress = false;
+				break;
+			case  Qt::Key_Alt:
+				ogreWidget->mAltPress = false;
+				break;
+			case  Qt::Key_Shift:
+				ogreWidget->mShiftPress = false;
 				break;
 		}
 	}
@@ -221,22 +238,22 @@ private slots:
 		ogreWidget->node3->attachObject(ogreWidget->ent3);
 
 		++value;
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
-    void changeColour()
+	void changeColour()
 	{
 		if(miao)
 		{
 			miao = false;
 			ogreWidget->mViewport->setBackgroundColour( Ogre::ColourValue( 0.5 , 0.5 , 0.5 ) );
-			ogreWidget->updateGL();
+			//ogreWidget->updateGL();
 		}
 		else
 		{
 			miao = true;
 			ogreWidget->mViewport->setBackgroundColour( Ogre::ColourValue( 1.0 , 0.0 , 0.0 ) );
-			ogreWidget->updateGL();
+			//ogreWidget->updateGL();
 		}
 	}
 
@@ -278,7 +295,7 @@ private slots:
 		ogreWidget->node3->attachObject(ogreWidget->ent3);
 
 		++value;
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void destroyEntity()
@@ -295,26 +312,44 @@ private slots:
 
 			ogreWidget->g_node = nullptr;
 
-			ogreWidget->updateGL();
+			//ogreWidget->updateGL();
 		}
+	}
+
+	void CreateNewLight()
+	{
+		ogreWidget->mCreateLight = true;
+		//ogreWidget->updateGL();
+	}
+
+	void SetShadow()
+	{
+		ogreWidget->mSetShadow = !ogreWidget->mSetShadow;
+		//ogreWidget->updateGL();
+	}
+
+	void SetAnim()
+	{
+		ogreWidget->mSetAnim = !ogreWidget->mSetAnim;
+		//ogreWidget->updateGL();
 	}
 
 	void rotate()
 	{
 		ogreWidget->rotate = true;
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void scaleUp()
 	{
 		ogreWidget->scaleUp = true;
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void scaleDown()
 	{
 		ogreWidget->scaleDw = true;
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void pick_one()
@@ -326,7 +361,7 @@ private slots:
 		}
 		ogreWidget->g_node = ogreWidget->node;
 		ogreWidget->g_node->showBoundingBox(true);
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 
 	void debug_row()
@@ -339,6 +374,6 @@ private slots:
 		std::cout << ui.listWidget->currentRow() << std::endl;
 		ogreWidget->g_node = ogreWidget->obj[ui.listWidget->currentRow()].second;
 		ogreWidget->g_node->showBoundingBox(true);
-		ogreWidget->updateGL();
+		//ogreWidget->updateGL();
 	}
 };

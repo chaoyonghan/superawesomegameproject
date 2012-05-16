@@ -1,14 +1,14 @@
 /********************************************************************************
-** Form generated from reading UI file 'myh10352.ui'
+** Form generated from reading UI file 'myOfn928.ui'
 **
-** Created: Tue 15. May 02:34:34 2012
+** Created: Wed 16. May 19:06:04 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef MYH10352_H
-#define MYH10352_H
+#ifndef MYOFN928_H
+#define MYOFN928_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
@@ -45,9 +45,6 @@ public:
     QAction *actionOnline_Guide;
     QAction *actionAbout;
     QWidget *centralwidget;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QListWidget *listWidget;
     QWidget *horizontalLayoutWidget_2;
     QHBoxLayout *horizontalLayout_2;
     QWidget *horizontalLayoutWidget_3;
@@ -99,6 +96,10 @@ public:
     QLabel *label_7;
     QPushButton *aaa;
     QPushButton *aaa_2;
+    QPushButton *pushButtonCreateLight;
+    QPushButton *pushButtonSetShadow;
+    QPushButton *pushButtonStartAnim;
+    QListWidget *listWidget;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuTerrain;
@@ -137,17 +138,6 @@ public:
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        horizontalLayoutWidget = new QWidget(centralwidget);
-        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(9, 59, 201, 661));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        listWidget = new QListWidget(horizontalLayoutWidget);
-        listWidget->setObjectName(QString::fromUtf8("listWidget"));
-
-        horizontalLayout->addWidget(listWidget);
-
         horizontalLayoutWidget_2 = new QWidget(centralwidget);
         horizontalLayoutWidget_2->setObjectName(QString::fromUtf8("horizontalLayoutWidget_2"));
         horizontalLayoutWidget_2->setGeometry(QRect(219, 9, 791, 521));
@@ -322,10 +312,23 @@ public:
 
         aaa = new QPushButton(centralwidget);
         aaa->setObjectName(QString::fromUtf8("aaa"));
-        aaa->setGeometry(QRect(10, 10, 81, 41));
+        aaa->setGeometry(QRect(10, 10, 91, 41));
         aaa_2 = new QPushButton(centralwidget);
         aaa_2->setObjectName(QString::fromUtf8("aaa_2"));
-        aaa_2->setGeometry(QRect(100, 10, 81, 41));
+        aaa_2->setEnabled(true);
+        aaa_2->setGeometry(QRect(110, 10, 101, 41));
+        pushButtonCreateLight = new QPushButton(centralwidget);
+        pushButtonCreateLight->setObjectName(QString::fromUtf8("pushButtonCreateLight"));
+        pushButtonCreateLight->setGeometry(QRect(10, 60, 91, 51));
+        pushButtonSetShadow = new QPushButton(centralwidget);
+        pushButtonSetShadow->setObjectName(QString::fromUtf8("pushButtonSetShadow"));
+        pushButtonSetShadow->setGeometry(QRect(110, 60, 101, 51));
+        pushButtonStartAnim = new QPushButton(centralwidget);
+        pushButtonStartAnim->setObjectName(QString::fromUtf8("pushButtonStartAnim"));
+        pushButtonStartAnim->setGeometry(QRect(10, 120, 91, 41));
+        listWidget = new QListWidget(centralwidget);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
+        listWidget->setGeometry(QRect(10, 168, 199, 551));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -418,6 +421,9 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Modify...", 0, QApplication::UnicodeUTF8));
         aaa->setText(QApplication::translate("MainWindow", "Debug aaa", 0, QApplication::UnicodeUTF8));
         aaa_2->setText(QApplication::translate("MainWindow", "Debug bbb", 0, QApplication::UnicodeUTF8));
+        pushButtonCreateLight->setText(QApplication::translate("MainWindow", "Create Light", 0, QApplication::UnicodeUTF8));
+        pushButtonSetShadow->setText(QApplication::translate("MainWindow", "Set Shadow", 0, QApplication::UnicodeUTF8));
+        pushButtonStartAnim->setText(QApplication::translate("MainWindow", "Start Anim", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuTerrain->setTitle(QApplication::translate("MainWindow", "Terrain", 0, QApplication::UnicodeUTF8));
         menuModels->setTitle(QApplication::translate("MainWindow", "Models", 0, QApplication::UnicodeUTF8));
@@ -432,4 +438,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // MYH10352_H
+#endif // MYOFN928_H
