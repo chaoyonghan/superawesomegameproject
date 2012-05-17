@@ -11,8 +11,11 @@
 #include <string>
 #include <utility>
 #include <QThread>
+#include <QMessageBox>
 #include <QTimer>
-
+#include <QStringList>
+#include <OgreTerrain.h>
+#include <OgreTerrainGroup.h>
 #include "ETTerrainManager.h"
 #include "ETTerrainInfo.h"
 #include "ETBrush.h"
@@ -127,9 +130,18 @@ public:
 	float mTranslateY;
 	float mTranslateZ;
 
+	float calibrationMove;
+
 	QTimer* timer;
 
-	OgreWidget( QWidget *parent=0 ) : QGLWidget( parent ), mOgreWindow(NULL)
+	Ogre::TerrainGlobalOptions* mTerrainGlobals;
+    Ogre::TerrainGroup* mTerrainGroup;
+    bool mTerrainsImported;
+
+	OgreWidget( QWidget *parent=0 ) 
+		: QGLWidget( parent )
+		, mOgreWindow(NULL)
+		, mAnimStateThread(nullptr)
 	{
 		//setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 
@@ -157,6 +169,10 @@ public:
 		rotY = 0.0f;
 		rotZ = 0.0f;
 
+		rotNodeX = 0.0f;
+		rotNodeY = 0.0f;
+		rotNodeZ = 0.0f;
+
 		count = 0;
 
 		dxMouse = false;
@@ -168,9 +184,11 @@ public:
 		green_gizmo = new Gizmo();
 		blue_gizmo = new Gizmo();
 
+		calibrationMove = 0.050;
+
 		this->setMouseTracking(true);
 		timer = new QTimer();
-		timer->setInterval(30);
+		timer->setInterval(10);
 		timer->start();
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 	}
@@ -189,6 +207,13 @@ public:
 	{
 		mCamera->moveRelative(Ogre::Vector3(0, 0, -0.2));
 	}
+
+signals:
+
+	void setComboAnimBox(const QStringList&);
+	void ClearAnimBox();
+	void SetEntityPosLabel();
+
 protected slots:
 
 	void update()
@@ -204,6 +229,7 @@ protected:
 	bool CreateNodeLight();
 	bool setShadow();
 	bool unsetShadow();
+	bool CreateAnimationState();
 
 	static void qNormalizeAngle(int &angle)
 	{
@@ -222,7 +248,7 @@ protected:
 			break;
 		}
 	}*/
-
+	
 	void mouseMoveEvent(QMouseEvent *event)
 	{
 		std::cout << "EVENT TYPE: " << event->type() << std::endl;
@@ -231,93 +257,44 @@ protected:
 		float dy = event->posF().ry() - lastPos.y();
 		isRightMousePress = event->buttons() & Qt::RightButton;
 		if (event->buttons() & Qt::RightButton) {
-			rotX = 0.025 * dx;
-			rotY = -0.025 * dy;
+			rotX = calibrationMove * dx;
+			rotY = -calibrationMove * dy;
 			
 			//updateGL();
 		}
 		else if (mCtrlPress && !mAltPress && !mShiftPress) {
-			mTranslateX = 0.025*dx;
-			mTranslateY = -0.025*dy;
+			mTranslateX = calibrationMove*dx;
+			mTranslateY = -calibrationMove*dy;
 			//updateGL();
 		}
 		else if (mAltPress && mCtrlPress && !mShiftPress) {
-			mTranslateX = 0.025*dx;
-			mTranslateZ = -0.025*dy;
+			mTranslateX = calibrationMove*dx;
+			mTranslateZ = -calibrationMove*dy;
 			//updateGL();
 		}
 		else if (!mAltPress && mCtrlPress && mShiftPress) {
-			rotNodeX = 0.035 * dx;
-			rotNodeY = -0.035 * dy;
+			rotNodeX = calibrationMove * dx;
+			rotNodeY = -calibrationMove * dy;
 			//updateGL();
 		}
-		lastPos = event->pos();
-	}
+		else
+		{
+			mTranslateX = 0.0f;
+			mTranslateY = 0.0f;
+			mTranslateZ = 0.0f;
 
-	void mousePressEvent(QMouseEvent *event)
-	{
-		lastPos = event->pos();
-		if (event->buttons() & Qt::LeftButton) {
-			if(g_node != nullptr)
-				g_node->showBoundingBox(false);
-			
-			float x = (float)((lastPos.x())/(float)(this->width()));
-			float y = (float)((lastPos.y())/(float)(this->height()));
+			rotX = 0.0f;
+			rotY = 0.0f;
+			rotZ = 0.0f;
 
-			/*
-			QString string;
-			string.sprintf("\nX = %d - <0.0 to 1.0 normalized> %f\nY = %d - <0.0 to 1.0 normalized> %f\n", 
-			lastPos.x(),
-			x,
-			lastPos.y(),
-			y);
-			QMessageBox::information(this, "PICK AT", string);
-			*/
-
-			Ogre::Ray ray = mCamera->getCameraToViewportRay(x, y);
-
-			Ogre::RaySceneQuery* mRayScnQuery = mSceneMgr->createRayQuery(Ogre::Ray());
-
-			mRayScnQuery->setRay(ray);
-			mRayScnQuery->setSortByDistance(true);
-
-			Ogre::RaySceneQueryResult &result = mRayScnQuery->execute();
-			Ogre::RaySceneQueryResult::iterator iter = result.begin();
-
-			if(iter != result.end() && iter->movable)
-			{
-				g_node = const_cast<Ogre::SceneNode*>(iter->movable->getParentSceneNode());
-				g_node->showBoundingBox(true);
-				std::cout << "DEBUG POINT: " << ray.getPoint(result.begin()->distance) << std::endl;
-
-				////	if(g_node->getName().compare(red_gizmo->m_node->getName()) == 0)
-				////	{
-				////		//((Ogre::Entity*)(g_node->getAttachedObject(0)))->setMaterialName("YellowHighlight");
-				////		if(sel_gizmo) sel_gizmo->setMaterial(sel_gizmo->m_gt);
-				////		red_gizmo->m_entity->setMaterialName("YellowHighlight");
-				////		sel_gizmo = red_gizmo;
-				////	}
-				////	else if(g_node->getName().compare(green_gizmo->m_node->getName()) == 0)
-				////	{
-				////		if(sel_gizmo) sel_gizmo->setMaterial(sel_gizmo->m_gt);
-				////		green_gizmo->m_entity->setMaterialName("YellowHighlight");
-				////		sel_gizmo = green_gizmo;
-				////	}
-				////	else if(g_node->getName().compare(blue_gizmo->m_node->getName()) == 0)
-				////	{
-				////		if(sel_gizmo) sel_gizmo->setMaterial(sel_gizmo->m_gt);
-				////		blue_gizmo->m_entity->setMaterialName("YellowHighlight");
-				////		sel_gizmo = blue_gizmo;
-				////	}
-			}
-			else
-			{
-				g_node = nullptr;
-				//if(sel_gizmo) sel_gizmo->m_entity->setVisible(false);
-			}
+			rotNodeX = 0.0f;
+			rotNodeY = 0.0f;
+			rotNodeZ = 0.0f;
 		}
-		//this->updateGL();
+		lastPos = event->pos();
 	}
+
+	void mousePressEvent(QMouseEvent *event);
 
 	void wheelEvent(QWheelEvent *event)
 	{
@@ -337,21 +314,23 @@ protected:
 
 	virtual Ogre::RenderSystem* chooseRenderer( Ogre::RenderSystemList* );
 
+	 
+    void defineTerrain(long x, long y);
+    void initBlendMaps(Ogre::Terrain* terrain);
+    void configureTerrainDefaults(Ogre::Light* light);
+
 };
 
-class MyEntityAnim : public QThread
+class MyEntityAnim
 {
-	Ogre::AnimationState* _aniState;
-	unsigned long mMilliSec;
-	bool mIsStarted;
-	OgreWidget* mOgrePtr;
 
 public:
-	MyEntityAnim(Ogre::Entity* ptr,Ogre::String animName, OgreWidget* ptrOgreW)
-		:QThread()
-		,_aniState(ptr->getAnimationState(animName))
-		,mMilliSec(25)
-		,mOgrePtr(ptrOgreW)
+
+	Ogre::AnimationState* _aniState;
+	bool mIsStarted;
+
+	MyEntityAnim(Ogre::Entity* ptr,Ogre::String animName)
+		:_aniState(ptr->getAnimationState(animName))
 		,mIsStarted(false)
 	{
 
@@ -361,11 +340,6 @@ public:
 	{
 		_aniState->setEnabled(true);
 		_aniState->setLoop(true);
-	}
-
-	void setAnimStep(unsigned long time)
-	{
-		mMilliSec = time;
 	}
 
 	bool isStarted()
@@ -381,20 +355,7 @@ public:
 	void run()
 	{
 		mIsStarted = true;
-		while(1)
-		{
-			msleep(mMilliSec);
-			if(mOgrePtr->mSetAnim)
-			{
-				_aniState->addTime(0.01);
-				//mOgrePtr->updateGL();
-			}
-			else
-			{
-				mIsStarted = false;
-				break;
-			}
-		}
+		_aniState->addTime(0.01);
 	}
 };
 

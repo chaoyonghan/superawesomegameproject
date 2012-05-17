@@ -41,7 +41,7 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(ConfigurationName)</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(ConfigurationName)</OutDir>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(BOOST_ROOT);$(QTDIR)\include;$(QTDIR)\mkspecs\win32-msvc2010;$(IncludePath);C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(OGRE_HOME)include;$(OGRE_SRC)OgreMain\include</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Simone\Documents\qwt-6.0.1\src;$(QWT_INC);$(BOOST_ROOT);$(QTDIR)\include;$(QTDIR)\mkspecs\win32-msvc2010;$(IncludePath);C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Include;$(OGRE_HOME)include;$(OGRE_SRC)OgreMain\include</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(BOOST_LIBRARYDIR);$(QTDIR)\lib;C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(OGRE_HOME)lib\$(Configuration);$(OGRE_SRC)Dependencies\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -50,15 +50,15 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(OGRE_HOME)\Components\Terrain\include;$(OGRE_HOME)\OgreMain\include;$(OGRE_HOME)\Samples\Common\include;$(OIS_HOME)\includes;$(BOOST_ROOT)\;$(OGRE_SRC)\include;$(ProjectDir)\include;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtXmlPatterns;C:\Users\Simone\Documents\QTTest\etm-2.3.1\etm-2.3.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QWT_INC);$(OGRE_HOME)\Components\Terrain\include;$(OGRE_HOME)\OgreMain\include;$(OGRE_HOME)\Samples\Common\include;$(OIS_HOME)\includes;$(BOOST_ROOT)\;$(OGRE_SRC)\include;$(ProjectDir)\include;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtXmlPatterns;C:\Users\Simone\Documents\QTTest\etm-2.3.1\etm-2.3.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost_1_44\lib;$(QTDIR)\lib;C:\Users\Simone\Documents\QTTest\etm-2.3.1\etm-2.3.1\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Simone\Documents\qwt-6.0.1\lib;$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost_1_44\lib;$(QTDIR)\lib;C:\Users\Simone\Documents\QTTest\etm-2.3.1\etm-2.3.1\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OgreMain_d.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtXmld4.lib;QtOpenGLd4.lib;opengl32.lib;glu32.lib;QtXmlPatternsd4.lib;EditableTerrainManager_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreTerrain_d.lib;qwtd.lib;qwt.lib;OgreMain_d.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtXmld4.lib;QtOpenGLd4.lib;opengl32.lib;glu32.lib;QtXmlPatternsd4.lib;EditableTerrainManager_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /y "$(OGRE_HOME)\Bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
