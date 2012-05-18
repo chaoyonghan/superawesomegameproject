@@ -57,9 +57,9 @@
     <ClCompile Include="..\Effects11\EffectRuntime.cpp">
       <Filter>Effects11</Filter>
     </ClCompile>
-    <ClCompile Include="MGD_example09.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="HeightMap.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DXUT\DXUT.h">
@@ -110,10 +110,9 @@
     <None Include="..\Effects11\EffectVariable.inl">
       <Filter>Effects11</Filter>
     </None>
-    <None Include="basic_lighting_effect.fx" />
     <None Include="basic_terrain_effect.fx" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MGD_example.rc" />
+    <ResourceCompile Include="main.rc" />
   </ItemGroup>
 </Project>

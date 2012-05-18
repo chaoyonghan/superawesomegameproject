@@ -191,7 +191,7 @@ public:
 		if( FAILED( hr ) )
 		{
 			MessageBox( NULL,
-				L"Problema nel caricamento di basic_lighting_effect.fx.", L"Error", MB_OK );
+				L"Problema nel caricamento di basic_terrain_effect.fx.", L"Error", MB_OK );
 
 			if (pErrorBlob)	 {
 				MessageBoxA(0, (char*)pErrorBlob->GetBufferPointer(), 0, 0);

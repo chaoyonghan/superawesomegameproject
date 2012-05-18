@@ -1,13 +1,3 @@
-//--------------------------------------------------------------------------------------
-// File: MGC_example09.cpp
-// 
-// **************************************
-// Texture Mapping - Utilizzo del color texture mapping
-// **************************************
-//
-// Copyright (c) Roberto Toldo 2010. Do not distribute. (Master Game Development - University of Verona)
-//--------------------------------------------------------------------------------------
-
 #include "DXUT.h"
 #include "DXUTmisc.h"
 #include "DXUTgui.h"
@@ -176,9 +166,9 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 	pLight.Init(pd3dDevice);
 	par.init(pd3dDevice);
 	par.setEmitPos(D3DXVECTOR3(0.0f,5.0f,0.0f));
-	g_ViewEyeVector = D3DXVECTOR3( 0.0f, 1.0f, -5.0f );
+	g_ViewEyeVector = D3DXVECTOR3( 0.0f, 30.0f, 15.0f );
 	g_ViewUpVector = D3DXVECTOR3( 0.0f, 1.0f, 0.0f );
-	g_ViewAtVector = D3DXVECTOR3( 0.0f, 0.0f, 0.0f );
+	g_ViewAtVector = D3DXVECTOR3( 0.0f, 15.0f, 0.0f );
 
 	// Il vettore vista è semplicemente eye - at normalizzato
 	g_ViewViewVector = (g_ViewAtVector - g_ViewEyeVector); 

@@ -22,6 +22,7 @@
     <ProjectGuid>{D3D10001-96D0-4629-88B8-122C0256058C}</ProjectGuid>
     <RootNamespace>Tutorial01</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <ProjectName>GraphicsProject</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -203,7 +204,7 @@
     <ClCompile Include="..\Effects11\EffectReflection.cpp" />
     <ClCompile Include="..\Effects11\EffectRuntime.cpp" />
     <ClCompile Include="HeightMap.cpp" />
-    <ClCompile Include="MGD_example09.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -228,12 +229,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Effects11\EffectVariable.inl" />
-    <None Include="basic_lighting_effect.fx" />
     <None Include="basic_terrain_effect.fx" />
     <None Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MGD_example.rc" />
+    <ResourceCompile Include="main.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
