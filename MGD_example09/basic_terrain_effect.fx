@@ -1,8 +1,3 @@
-//--------------------------------------------------------------------------------------
-// basic_lighting_effect.fx
-//
-// Copyright (c) Roberto Toldo 2010. Do not distribute. (Master Game Development - University of Verona)
-//--------------------------------------------------------------------------------------
 
 //Definizione variabili e strutture
 matrix World;
@@ -136,14 +131,10 @@ VS_OUTPUT VSGourad( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PSGourad(VS_OUTPUT input ) : SV_Target
 {
-	//input.color = input.color * txDiffuse.Sample(samLinear,input.tex);
 	input.light0 = normalize(input.light0);
 	input.light1 = normalize(input.light1);
 	input.view = normalize(input.view);
 	input.normal = normalize(input.normal);
-
-	// Se il bump mapping è abilitato assegna valori da texture, altrimenti da normali rasterizzate
-	//TODO: Campiona normale dalla texture
 
 	float4 c0 = gLayer0.Sample(samLinear,input.tex);
 	float4 c1 = gLayer1.Sample(samLinear,input.tex);
@@ -171,26 +162,21 @@ float4 PSGourad(VS_OUTPUT input ) : SV_Target
 	normal = lerp(normal, cN3, t.b);
 	normal = lerp(normal, cN4, t.a);
 
-	//return C;
 	float4 output; 
 	output.rgba = 0;
-	// Vettore halfangle
+
 	float3 halfAngle0 = normalize( (input.view + input.light0) / 2 );
 	float3 halfAngle1 = normalize( (input.view + input.light1) / 2 );
 
-	// Componente diffusiva
 	output += max(0,dot( input.light0, normal ) * g_lights[0].Color * color ) ;
 	output += max(0,dot( input.light1, normal ) * g_lights[1].Color * color ) ;
 
-	// Componente ambientale
 	output += g_lights[0].Ambient * color;
 	output += g_lights[1].Ambient * color;
 
-	// Componente speculare
 	output += max(0,pow( dot( halfAngle0, normal ), g_material.Shininess ) * g_lights[0].Color * g_material.Ks );
 	output += max(0,pow( dot( halfAngle1, normal ), g_material.Shininess ) * g_lights[1].Color * g_material.Ks );
 
-	// Componente emissiva
 	output += g_material.Ke;
 
 	return output;
